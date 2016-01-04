@@ -6,4 +6,4 @@ target_link_libraries(blink -Wl,--start-group core rtos lwip hal gcc c ${CMAKE_B
 
 add_dependencies(blink libmain.a libnet80211.a libphy.a libpp.a libwpa.a)
 
-set_target_properties(blink PROPERTIES LINK_FLAGS "-Wl,--verbose")
+#set_target_properties(blink PROPERTIES LINK_FLAGS "-Wl,--verbose")

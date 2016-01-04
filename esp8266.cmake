@@ -10,6 +10,9 @@ find_program(XTENSA_CC xtensa-lx106-elf-gcc
 find_program(XTENSA_CXX xtensa-lx106-elf-g++
     ${TOOLCHAIN_DIR}/bin
     )
+find_program(XTENSA_AS xtensa-lx106-elf-as
+    ${TOOLCHAIN_DIR}/bin
+    )
 find_program(XTENSA_OBJCOPY xtensa-lx106-elf-objcopy
     ${TOOLCHAIN_DIR}/bin
     )
@@ -31,6 +34,11 @@ set(CMAKE_C_FLAGS
   #"-Os -Wpointer-arith -Wl,-EL -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals"
 )
 
+set(CMAKE_ASM_FLAGS
+  "${CMAKE_ASM_FLAGS}"
+  "-Wall -Werror -Wl,-EL -nostdlib -mlongcalls -mtext-section-literals"
+)
+
 set(CMAKE_EXE_LINKER_FLAGS
   "${CMAKE_EXE_LINKER_FLAGS}"
   "-nostdlib -Wl,--no-check-sections -u call_user_start -Wl,-static -Wl,-Map=${CMAKE_BINARY_DIR}/program.map"
@@ -40,8 +48,10 @@ set(CMAKE_EXE_LINKER_FLAGS
 
 set(CMAKE_C_FLAGS_RELEASE "-O2")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+set(CMAKE_ASM_FLAGS_RELEASE "-O2")
 set(CMAKE_C_FLAGS_DEBUG "-g -O0")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+set(CMAKE_ASM_FLAGS_DEBUG "-g -O0")
 
 # if (CMAKE_SYSTEM_PROCESSOR STREQUAL "cortex-m0plus")
 #
@@ -59,6 +69,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 
 # fix long strings (CMake appends semicolons)
 string(REGEX REPLACE ";" " " CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+string(REGEX REPLACE ";" " " CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS}")
 string(REGEX REPLACE ";" " " CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}" CACHE STRING "")
