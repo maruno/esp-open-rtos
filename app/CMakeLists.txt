@@ -1,4 +1,4 @@
-project(example-project)
+project(app)
 
 add_executable(blink blink.c)
 
