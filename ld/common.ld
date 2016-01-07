@@ -99,7 +99,12 @@ SECTIONS
        functions, etc. */
     *(.iram1.*)
     /* SDK libraries expect their .text sections to link to iram, not irom */
-    *sdklib*:*(.literal .text .literal.* .text.*)
+    *libmain.a*:*(.literal .text .literal.* .text.*)
+    *libnet80211.a*:*(.literal .text .literal.* .text.*)
+    *libphy.a*:*(.literal .text .literal.* .text.*)
+    *libpp.a*:*(.literal .text .literal.* .text.*)
+    *libwpa.a*:*(.literal .text .literal.* .text.*)
+    /**sdklib*:*(.literal .text .literal.* .text.*)*/
     /* libgcc integer functions also need to be in .text, as some are called before
        flash is mapped (also performance)
     */

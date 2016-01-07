@@ -20,55 +20,53 @@ find_program(XTENSA_AR xtensa-lx106-elf-ar
     ${TOOLCHAIN_DIR}/bin
 )
 find_program(XTENSA_SIZE_TOOL xtensa-lx106-elf-size
-    ${TOOLCHAIN_DIR}/bin)
+    ${TOOLCHAIN_DIR}/bin
+)
+find_program(ESPTOOL esptool.py
+    ${TOOLCHAIN_DIR}/bin
+)
 
 CMAKE_FORCE_C_COMPILER(${XTENSA_CC} GNU)
 CMAKE_FORCE_CXX_COMPILER(${XTENSA_CXX} GNU)
 
+set(COMMON_C_CXX_FLAGS "-Wall -Werror -nostdlib -mlongcalls -mtext-section-literals -ffunction-sections -fdata-sections")
+
 set(CMAKE_C_FLAGS
-  "${CMAKE_C_FLAGS}"
-  #"-Wall -Werror -Wl,-EL -nostdlib -mlongcalls -mtext-section-literals -ffunction-sections -fdata-sections -g -O2"
-  "-Wall -Werror -Wl,-EL -nostdlib -fno-inline-functions -Wpointer-arith -mlongcalls -mtext-section-literals"
-  "-ffunction-sections -fdata-sections"
-  #"-Wall -Werror -Wl,-EL -nostdlib -mlongcalls -fno-inline-functions -fdata-sections -g -O2"
-  #"-Os -Wpointer-arith -Wl,-EL -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals"
+    "${CMAKE_C_FLAGS}"
+    "${COMMON_C_CXX_FLAGS}"
+)
+
+set(CMAKE_CXX_FLAGS
+    #"${CMAKE_C_FLAGS}"
+    "${CMAKE_CXX_FLAGS}"
+    "${COMMON_C_CXX_FLAGS}"
+    "-fno-exceptions -fno-rtti"
 )
 
 set(CMAKE_ASM_FLAGS
-  "${CMAKE_ASM_FLAGS}"
-  "-Wall -Werror -Wl,-EL -nostdlib -mlongcalls -mtext-section-literals"
+    "${CMAKE_ASM_FLAGS}"
+    "${COMMON_C_CXX_FLAGS}"
 )
 
 set(CMAKE_EXE_LINKER_FLAGS
-  "${CMAKE_EXE_LINKER_FLAGS}"
-  "-nostdlib -Wl,--no-check-sections -u call_user_start -Wl,-static -Wl,-Map=${CMAKE_BINARY_DIR}/program.map"
-  "-Wl,-gc-sections"
-  "-T${CMAKE_SOURCE_DIR}/ld/nonota.ld -T${CMAKE_SOURCE_DIR}/ld/common.ld -T${CMAKE_SOURCE_DIR}/ld/rom.ld"
+    "${CMAKE_EXE_LINKER_FLAGS}"
+    "-nostdlib -Wl,--no-check-sections -u call_user_start -Wl,-static -Wl,-gc-sections"
+    "-T${CMAKE_SOURCE_DIR}/ld/nonota.ld -T${CMAKE_SOURCE_DIR}/ld/common.ld -T${CMAKE_SOURCE_DIR}/ld/rom.ld"
 )
 
-set(CMAKE_C_FLAGS_RELEASE "-O2")
-set(CMAKE_CXX_FLAGS_RELEASE "-O2")
-set(CMAKE_ASM_FLAGS_RELEASE "-O2")
+set(CMAKE_C_FLAGS_RELEASE "-g -O2")
+#set(CMAKE_C_FLAGS_RELEASE "-Os")
+set(CMAKE_CXX_FLAGS_RELEASE "-g -O2")
+#set(CMAKE_CXX_FLAGS_RELEASE "-Os")
+set(CMAKE_ASM_FLAGS_RELEASE "-g -O2")
+#set(CMAKE_ASM_FLAGS_RELEASE "-Os")
 set(CMAKE_C_FLAGS_DEBUG "-g -O0")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 set(CMAKE_ASM_FLAGS_DEBUG "-g -O0")
 
-# if (CMAKE_SYSTEM_PROCESSOR STREQUAL "cortex-m0plus")
-#
-#   set(CMAKE_C_FLAGS
-#     "${CMAKE_C_FLAGS}"
-#     "-mcpu=cortex-m0plus -mthumb"
-#   )
-#
-# else ()
-#   message(WARNING
-#     "Processor not recognised in toolchain file, "
-#     "compiler flags not configured."
-#   )
-# endif ()
-
 # fix long strings (CMake appends semicolons)
 string(REGEX REPLACE ";" " " CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+string(REGEX REPLACE ";" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 string(REGEX REPLACE ";" " " CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS}")
 string(REGEX REPLACE ";" " " CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 
