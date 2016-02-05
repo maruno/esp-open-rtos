@@ -17,6 +17,7 @@ include_directories(
   lwip/lwip/src/include/ipv6/lwip
   lwip/lwip/src/include/lwip
   core/include
+  ${LX106_HAL_BASE}/include
 )
 
 link_directories(libc/xtensa-lx106-elf/lib)
