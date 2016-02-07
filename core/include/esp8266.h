@@ -11,11 +11,20 @@
 #ifndef _ESP8266_H
 #define _ESP8266_H
 
+#ifdef	__cplusplus
+extern "C" {
+#endif
+
+
 #include "common_macros.h"
 #include "esp/registers.h"
 #include "esp/interrupts.h"
 #include "esp/iomux.h"
 #include "esp/gpio.h"
 #include "esp/timer.h"
+
+#ifdef	__cplusplus
+}
+#endif
 
 #endif
