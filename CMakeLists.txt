@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.4.1)
 
 project(esp-open-rtos)
 
+# Enable modern C11/C++11 with GNU extensions
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fno-exceptions -fno-rtti")
+
 include_directories(
   include
   libc/xtensa-lx106-elf/include
